@@ -10,7 +10,7 @@ const OUTPUT_PATH = 'poster.mp4';
 (async () => {
   console.log('Launching browser with hardware acceleration forced...');
   const browser = await launch({
-    headless: 'new', // Use new headless mode so we can capture beyond physical screen limits
+    headless: false, // Force hardware GPU
     channel: 'chrome',
     args: [
       '--no-sandbox',
@@ -18,10 +18,11 @@ const OUTPUT_PATH = 'poster.mp4';
       '--disable-web-security',
       '--disable-features=IsolateOrigins,site-per-process',
       '--gpu-preference=high-performance',
+      '--ignore-gpu-blocklist',
+      '--use-gl=desktop',
       '--enable-gpu-rasterization',
       '--enable-zero-copy',
-      '--use-gl=desktop',
-      '--window-size=1060,1500', // Force exact window size
+      '--window-size=1060,1500', 
     ],
     defaultViewport: {
       width: 1060,
