@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Orbitron:wght@700;900&family=Outfit:wght@400;500;600&display=swap');
+
+:root {
+  /* Real metallic gold palette — warm amber tones, no neon */
+  --gold-deep:     #5c3d0a;   /* darkest shadow gold */
+  --gold-dark:     #7d5518;   /* dark mid gold */
+  --gold-mid:      #b8892a;   /* true mid gold */
+  --gold-warm:     #d4a843;   /* warm bright gold */
+  --gold-bright:   #e8c855;   /* bright highlight gold */
+  --gold-specular: #f5e8b0;   /* specular / almost white gold */
+
+  /* Card surface — warm ivory / parchment */
+  --ivory:         #fdfaf3;
+  --ivory-mid:     #f7edd6;
+  --ivory-deep:    #eddbb5;
+
+  /* Text on light card */
+  --text-dark:     #1c1008;
+  --text-mid:      #3d2810;
+  --text-warm:     #6b4510;
+
+  /* Title block — espresso brown so gold text pops */
+  --espresso:      #1e0e04;
+  --espresso-warm: #2e1508;
+
+  --font-serif:    'Cormorant Garamond', Georgia, serif;
+  --font-heading:  'Orbitron', sans-serif;
+  --font-body:     'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0603;
+  font-family: var(--font-body);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}

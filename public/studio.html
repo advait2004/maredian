@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VFX Studio Player</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* 
+      This forces the layout to think it's 530x750, 
+      then scales it exactly 2x so it's 1060x1500 physically.
+      We use CSS scale so it perfectly fits any monitor!
+    */
+    /* Base state, JS will override scale */
+    .iframe-container {
+      width: 530px;
+      height: 750px;
+      transform-origin: center center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Embedded site -->
+  <div class="iframe-container">
+    <iframe id="poster-frame" src="/"></iframe>
+  </div>
+
+  <script>
+    console.log("VFX Studio Player Loaded.");
+    
+    function fitToScreen() {
+      const container = document.querySelector('.iframe-container');
+      
+      // Calculate max scale that fits in the current window (with 40px padding)
+      // Since it's rotated 90 degrees, width takes up 750 space and height takes up 530 space
+      const scale = Math.min(
+        (window.innerWidth - 40) / 750,
+        (window.innerHeight - 40) / 530
+      );
+      
+      // Apply responsive scale so it always fits perfectly, capped at max 2x for max resolution
+      container.style.transform = `scale(${Math.min(scale, 2)}) rotate(-90deg)`;
+    }
+
+    window.addEventListener('resize', fitToScreen);
+    fitToScreen(); // Run on load
+  </script>
+</body>
+</html>

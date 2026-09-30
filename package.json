@@ -1,0 +1,30 @@
+{
+  "name": "vfx",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "record": "node record-poster.js",
+    "studio": "node studio-player.js",
+    "render-hq": "node render-frames.js"
+  },
+  "dependencies": {
+    "lucide-react": "^1.47.0",
+    "puppeteer-stream": "^3.0.23",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "puppeteer": "^25.12.0",
+    "puppeteer-screen-recorder": "^3.0.6",
+    "vite": "^8.3.0"
+  }
+}

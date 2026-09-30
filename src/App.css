@@ -1,0 +1,814 @@
+/* ─── POSTER STAGE — letterboxes the 724×1024 frame ─── */
+.poster-stage {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #f0e8d8;
+  /* Warm champagne cream */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.poster-canvas {
+  position: relative;
+  height: 100vh;
+  aspect-ratio: 724 / 1024;
+  max-width: 100vw;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.poster-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: 0;
+  filter: brightness(0.8);
+  transform: scale(1.05);
+  /* Reduced scale since blur bleed is much smaller now */
+}
+
+.logo-container {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  width: 65%;
+  max-width: 450px;
+  z-index: 60;
+  /* Above the cards and branch */
+}
+
+.poster-logo {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.logo-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(220, 20, 60, 0) 45%,
+      rgba(220, 20, 60, 0.9) 50%,
+      rgba(220, 20, 60, 0) 55%,
+      transparent 65%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+
+  /* Mask the glare to exactly the shape of the logo */
+  -webkit-mask-image: url('/assets/meridian_logo.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/meridian_logo.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
+  animation: logoGlareSweep 4s ease-in-out 1 forwards;
+}
+
+@keyframes logoGlareSweep {
+  0% {
+    background-position: -250% 0;
+  }
+
+  100% {
+    background-position: 250% 0;
+  }
+}
+
+/* Very subtle warm vignette — soft luminous veil */
+.poster-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse 85% 70% at 50% 55%,
+      rgba(255, 248, 230, 0.12) 0%,
+      rgba(255, 245, 220, 0.04) 50%,
+      rgba(240, 228, 205, 0.25) 100%);
+  pointer-events: none;
+}
+
+
+/* ─── 5-CARD STAGE ─── */
+.cards-stage {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 38%;
+}
+
+.deck-root {
+  position: relative;
+  width: 197px;
+  /* Aspect ratio matches 847:1024 poster */
+  height: 238px;
+  transform-style: preserve-3d;
+}
+
+/* ─── CARD SLOTS — 5-position spatial layout ─── */
+.card-slot {
+  position: absolute;
+  inset: 0;
+  width: 197px;
+  height: 238px;
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s ease;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  cursor: default;
+}
+
+/* Slot 0 — Center Main */
+.card-slot[data-slot="0"] {
+  transform: translate(-50%, -50%) translateX(0px) translateY(-22px) scale(1.2) translateZ(110px);
+  left: 50%;
+  top: 50%;
+  z-index: 50;
+  opacity: 1;
+  filter: none;
+}
+
+/* Slot 1 — Inner Right */
+.card-slot[data-slot="1"] {
+  transform: translate(-50%, -50%) translateX(145px) translateY(13px) scale(0.87) translateZ(-35px) rotateY(-15deg);
+  left: 50%;
+  top: 50%;
+  z-index: 30;
+  opacity: 0.9;
+  filter: brightness(0.82) saturate(0.9);
+}
+
+/* Slot 2 — Outer Right */
+.card-slot[data-slot="2"] {
+  transform: translate(-50%, -50%) translateX(270px) translateY(31px) scale(0.70) translateZ(-115px) rotateY(-25deg);
+  left: 50%;
+  top: 50%;
+  z-index: 15;
+  opacity: 0.6;
+  filter: brightness(0.65) saturate(0.7) blur(0.8px);
+}
+
+/* Slot 3 — Outer Left */
+.card-slot[data-slot="3"] {
+  transform: translate(-50%, -50%) translateX(-270px) translateY(31px) scale(0.70) translateZ(-115px) rotateY(25deg);
+  left: 50%;
+  top: 50%;
+  z-index: 15;
+  opacity: 0.6;
+  filter: brightness(0.65) saturate(0.7) blur(0.8px);
+}
+
+/* Slot 4 — Inner Left */
+.card-slot[data-slot="4"] {
+  transform: translate(-50%, -50%) translateX(-145px) translateY(13px) scale(0.87) translateZ(-35px) rotateY(15deg);
+  left: 50%;
+  top: 50%;
+  z-index: 30;
+  opacity: 0.9;
+  filter: brightness(0.82) saturate(0.9);
+}
+
+/* Off-stage right (waiting to enter) */
+.card-slot[data-slot="out-right"] {
+  transform: translate(-50%, -50%) translateX(400px) scale(0.5) translateZ(-200px);
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Off-stage left (just exited) */
+.card-slot[data-slot="out-left"] {
+  transform: translate(-50%, -50%) translateX(-400px) scale(0.5) translateZ(-200px);
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────
+   PREMIUM MINIMAL GOLD BORDER
+   Sleek, Apple-style metallic border with sharp, elegant glare.
+   Animation triggers when card moves to the center slot.
+───────────────────────────────────────────────── */
+.card-gold-border {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 3.5px;
+  /* Thicker premium border */
+
+  background-image:
+    /* Subtle noise for metallic texture */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Sophisticated, metallic cherry red gradient */
+    linear-gradient(110deg,
+      #6e0012 0%,
+      #a80022 15%,
+      #d40432 30%,
+      #ff99aa 45%,
+      #ffffff 50%,
+      #ff99aa 55%,
+      #d40432 70%,
+      #a80022 85%,
+      #6e0012 100%);
+
+  background-blend-mode: overlay, normal;
+  background-size: 100px 100px, 300% 300%;
+  /* Start position hides the highlight */
+  background-position: 0 0, 150% 150%;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  -webkit-box-reflect: below 8px linear-gradient(to bottom, transparent 30%, rgba(255, 255, 255, 0.38) 100%);
+}
+
+/* Active card: premium shadow + smooth sweeping glare */
+.card-slot[data-slot="0"] .card-gold-border {
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(220, 20, 60, 0.3);
+  /* very faint cherry red glow */
+  animation: premiumBorderGlare 4.5s cubic-bezier(0.25, 1, 0.35, 1) 1 forwards;
+}
+
+@keyframes premiumBorderGlare {
+  0% {
+    background-position: 0 0, 150% 150%;
+  }
+
+  100% {
+    background-position: 0 0, -50% -50%;
+  }
+}
+
+/* ─── CARD FRAME ─── */
+.card-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 8.5px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+/* ─── METALLIC SHEEN — sleek internal sweep ─── */
+.card-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  border-radius: 8.5px;
+  opacity: 0;
+  background: linear-gradient(110deg,
+      transparent 20%,
+      rgba(220, 20, 60, 0.00) 40%,
+      rgba(220, 20, 60, 0.35) 48%,
+      /* cherry red specular */
+      rgba(220, 20, 60, 0.20) 52%,
+      transparent 65%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+}
+
+.card-slot[data-slot="0"] .card-sheen {
+  opacity: 1;
+  animation: premiumSheen 4.5s cubic-bezier(0.25, 1, 0.35, 1) 1 forwards;
+}
+
+@keyframes premiumSheen {
+  0% {
+    background-position: -350% center;
+  }
+
+  100% {
+    background-position: 350% center;
+  }
+}
+
+/* ─── CARD INNER LAYOUT ─── */
+/* card-inner: photo fills entire frame — no padding, no gap */
+.card-inner {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+}
+
+/* Top row: category + rarity badge */
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Dark warm text on ivory — like fine letterpress */
+.card-category {
+  font-family: var(--font-heading);
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--gold-deep);
+  background: rgba(180, 130, 40, 0.12);
+  border: 1px solid rgba(130, 85, 20, 0.4);
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.card-rarity {
+  font-family: var(--font-heading);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(200, 160, 50, 0.15);
+  border: 1px solid rgba(140, 95, 20, 0.35);
+}
+
+/* Photo window — thin real-gold inner border */
+/* Photo fills the entire card — no borders, no outlines inside */
+.card-photo {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 0;
+}
+
+.card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.card-slot[data-slot="0"]:hover .card-photo img {
+  transform: scale(1.05);
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 480px) {
+  .poster-canvas {
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+  }
+
+  .card-slot[data-slot="2"],
+  .card-slot[data-slot="3"] {
+    display: none;
+  }
+}
+
+/* ─── PARTICLE OVERLAY ─── */
+.particle-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── CUSTOM BLOSSOM BRANCH ─── */
+.custom-blossom-branch {
+  position: absolute;
+  top: -10px;
+  width: 58%;
+  /* Reaches towards the center logo */
+  height: auto;
+  z-index: 100;
+  /* Ensure it's visually above everything */
+  pointer-events: none;
+  /* Adds the requested soft glow around the branch */
+  filter: contrast(1.1) brightness(0.95) drop-shadow(0 0 10px rgba(255, 100, 150, 0.4));
+}
+
+.custom-blossom-branch-left {
+  left: -5%;
+  transform-origin: top left;
+  animation: customBranchSwayLeft 8s ease-in-out infinite;
+}
+
+.custom-blossom-branch-left-2 {
+  top: 15%;
+  left: -5%;
+  transform-origin: top left;
+  transform: scaleY(-1);
+  animation: customBranchSwayLeftMirrored 7.5s ease-in-out infinite -2s;
+}
+
+.custom-blossom-branch-right {
+  left: 105%;
+  transform-origin: top left;
+  transform: scaleX(-1);
+  animation: customBranchSwayRight 8.5s ease-in-out infinite;
+}
+
+.custom-blossom-branch-right-2 {
+  top: 15%;
+  left: 105%;
+  transform-origin: top left;
+  transform: scale(-1, -1);
+  animation: customBranchSwayRightMirrored 7.8s ease-in-out infinite -3.5s;
+}
+
+.custom-blossom-branch-center {
+  top: 5%;
+  /* Aligned closely with the logo */
+  left: -25%;
+  /* Shifted 20% more to the left */
+  width: 105%;
+  /* Extended to maintain its reach across the center */
+  transform-origin: center left;
+  /* Changed to center left for better swaying from the edge */
+  z-index: 55;
+  /* Below the logo (60) but above the cards (50) */
+  animation: customBranchSwayCenter 9s ease-in-out infinite;
+}
+
+@keyframes customBranchSwayLeft {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(2deg) translateY(-3px);
+  }
+
+  66% {
+    transform: rotate(-1deg) translateY(2px);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes customBranchSwayLeftMirrored {
+  0% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+
+  33% {
+    transform: scaleY(-1) rotate(2deg) translateY(-3px);
+  }
+
+  66% {
+    transform: scaleY(-1) rotate(-1deg) translateY(2px);
+  }
+
+  100% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+}
+
+@keyframes customBranchSwayRight {
+  0% {
+    transform: scaleX(-1) rotate(0deg);
+  }
+
+  33% {
+    transform: scaleX(-1) rotate(2deg) translateY(-3px);
+  }
+
+  66% {
+    transform: scaleX(-1) rotate(-1deg) translateY(2px);
+  }
+
+  100% {
+    transform: scaleX(-1) rotate(0deg);
+  }
+}
+
+@keyframes customBranchSwayRightMirrored {
+  0% {
+    transform: scale(-1, -1) rotate(0deg);
+  }
+
+  33% {
+    transform: scale(-1, -1) rotate(2deg) translateY(-3px);
+  }
+
+  66% {
+    transform: scale(-1, -1) rotate(-1deg) translateY(2px);
+  }
+
+  100% {
+    transform: scale(-1, -1) rotate(0deg);
+  }
+}
+
+@keyframes customBranchSwayCenter {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(1.5deg) translateY(-2px);
+  }
+
+  66% {
+    transform: rotate(-1deg) translateY(1.5px);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.petal-overlay-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 110;
+}
+
+.card-event-title {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: pre-line;
+  line-height: 1.3;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.card-event-title.active {
+  opacity: 1;
+}
+
+/* ─── DATE DISPLAY ─── */
+.poster-date-display {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-50%) translateZ(0);
+  right: 5%;
+  /* Restored to 5% to prevent squishing */
+  font-family: var(--font-heading, sans-serif);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: white;
+  z-index: 10;
+  /* Strictly beneath branch */
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  letter-spacing: 1px;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+  will-change: text-shadow, color;
+}
+
+.poster-date-display .month {
+  margin-right: 8px;
+}
+
+.poster-date-display .lit-text {
+  transition: color 0.5s ease;
+  animation: dateColorShift 4.8s infinite;
+  transform: translateZ(0);
+  /* Force hardware compositing on the animating spans to stop shaking */
+  will-change: text-shadow, color;
+  display: inline-block;
+  /* Required for transform to work on inline elements like spans */
+}
+
+.poster-date-display .lit-1 {
+  animation-delay: 0s;
+}
+
+.poster-date-display .lit-2 {
+  animation-delay: 1.2s;
+}
+
+.poster-date-display .lit-3 {
+  animation-delay: 2.4s;
+}
+
+.poster-date-display .lit-4 {
+  animation-delay: 3.6s;
+}
+
+@keyframes dateColorShift {
+
+  0%,
+  25%,
+  100% {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  12.5% {
+    color: #ff2a4b;
+    /* Metallic cherry red */
+    text-shadow: 0 0 12px rgba(220, 20, 60, 0.9), 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ─── BOTTOM LEFT LOGOS ─── */
+.bottom-left-logos {
+  position: absolute;
+  bottom: 4%;
+  left: 10%;
+  display: flex;
+  gap: 12px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.bottom-left-logos img {
+  height: 40px;
+  /* Matched to approximate visual height of scaled Jyothi logo */
+  width: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+.sdg-logo-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.sdg-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(220, 20, 60, 0) 45%,
+      rgba(220, 20, 60, 0.9) 50%,
+      rgba(220, 20, 60, 0) 55%,
+      transparent 65%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: logoGlareSweep 4s ease-in-out 1 forwards;
+}
+
+.sdg4-glare {
+  -webkit-mask-image: url('/assets/sdg4.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/sdg4.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.sdg9-glare {
+  -webkit-mask-image: url('/assets/sdg9.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/sdg9.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+/* ─── BOTTOM CENTER LOGO (CESA) ─── */
+.bottom-center-logo-container {
+  position: absolute;
+  bottom: -23%;
+  left: 50%;
+  transform: translateX(-49%) scale(0.190);
+  width: 90%;
+  max-width: 450px;
+  z-index: 60;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-center-logo-container img {
+  width: 100%;
+  height: auto;
+  opacity: 0.95;
+  /* Make completely white */
+  filter: brightness(0) invert(1) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* ─── SILVER JUBILEE LOGO ─── */
+.bottom-jubilee-logo-container {
+  position: absolute;
+  /* Adjust these values to position just the Jubilee logo */
+  bottom: -22.5%;
+  left: 70%;
+  transform: translateX(-50%) scale(0.06);
+  width: 90%;
+  max-width: 450px;
+  z-index: 60;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-jubilee-logo-container img {
+  width: 100%;
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* ─── JYOTHI COLLEGE LOGO ─── */
+.bottom-jyothi-logo-container {
+  position: absolute;
+  /* Adjust these values to position just the Jyothi logo */
+  bottom: -7%;
+  left: 50%;
+  transform: translateX(-13%) scale(0.190);
+  width: 90%;
+  max-width: 450px;
+  z-index: 60;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-jyothi-logo-container img {
+  width: 100%;
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+.bottom-logo-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(220, 20, 60, 0) 45%,
+      rgba(220, 20, 60, 0.9) 50%,
+      rgba(220, 20, 60, 0) 55%,
+      transparent 65%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: logoGlareSweep 4s ease-in-out 1 forwards;
+}
+
+.jyothi-glare {
+  -webkit-mask-image: url('/assets/jyothi_logo.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/jyothi_logo.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.jubilee-glare {
+  -webkit-mask-image: url('/assets/silver_jubilee_logo.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/silver_jubilee_logo.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.cesa-glare {
+  /* Overrides the mask for CESA logo specifically */
+  -webkit-mask-image: url('/assets/cesa_logo.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/assets/cesa_logo.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
