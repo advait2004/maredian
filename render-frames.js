@@ -18,13 +18,17 @@ const OUTPUT_PATH = 'poster_hq.mp4';
 
   console.log('Launching browser on T4 for lossless rendering...');
   const browser = await puppeteer.launch({
-    headless: 'new',
+    headless: false, // Must be false to guarantee hardware GPU on Linux (requires xvfb-run)
     args: [
       '--no-sandbox',
       '--autoplay-policy=no-user-gesture-required',
       '--disable-web-security',
       '--disable-features=IsolateOrigins,site-per-process',
       '--gpu-preference=high-performance',
+      '--ignore-gpu-blocklist',
+      '--use-gl=desktop',
+      '--enable-gpu-rasterization',
+      '--enable-zero-copy',
       '--window-size=1060,1500',
     ],
     defaultViewport: { width: 1060, height: 1500 }
