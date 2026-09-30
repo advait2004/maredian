@@ -142,8 +142,10 @@ const OUTPUT_PATH = 'poster_hq.mp4';
   const frame = await iframeHandle.contentFrame();
 
   console.log('Allowing app to load and mount (mocking 4 seconds of time)...');
+  let currentSimTime = 0;
   for(let i=0; i<240; i++) {
-     await frame.evaluate((time) => window.__advanceTime(time), i * 16.66);
+     currentSimTime += (1000 / FPS);
+     await frame.evaluate((time) => window.__advanceTime(time), currentSimTime);
      await new Promise(r => setTimeout(r, 10)); // Yield to network/React
   }
 
@@ -152,10 +154,9 @@ const OUTPUT_PATH = 'poster_hq.mp4';
   await new Promise(r => setTimeout(r, 3000));
 
   console.log('Rendering frames deterministically...');
-  let currentSimTime = 0;
-
+  
   for (let f = 1; f <= TOTAL_FRAMES; f++) {
-    // Advance simulation by exactly 1 frame
+    // Advance simulation continuously from where pre-warming left off!
     currentSimTime += (1000 / FPS);
     await frame.evaluate((t) => window.__advanceTime(t), currentSimTime);
 
