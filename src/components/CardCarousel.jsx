@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 function getSlot(index, activeIndex, total) {
   const diff = ((index - activeIndex) % total + total) % total;
@@ -9,6 +10,15 @@ function getSlot(index, activeIndex, total) {
   if (diff === total - 1) return '4';
   return 'out-right';
 }
+
+const slotVariants = {
+  "0": { x: 0, y: -22, scale: 1.2, z: 110, rotateX: 0, rotateY: 0, opacity: 1, zIndex: 50 },
+  "1": { x: 280, y: 10, scale: 0.9, z: 40, rotateX: 0, rotateY: -20, opacity: 0.9, zIndex: 40 },
+  "2": { x: 500, y: 20, scale: 0.7, z: 0, rotateX: 0, rotateY: -35, opacity: 0.6, zIndex: 30 },
+  "3": { x: -500, y: 20, scale: 0.7, z: 0, rotateX: 0, rotateY: 35, opacity: 0.6, zIndex: 30 },
+  "4": { x: -280, y: 10, scale: 0.9, z: 40, rotateX: 0, rotateY: 20, opacity: 0.9, zIndex: 40 },
+  "out-right": { x: 800, y: 40, scale: 0.5, z: -50, rotateX: 0, rotateY: -45, opacity: 0, zIndex: 20 }
+};
 
 export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
   const total = cards.length;
@@ -54,30 +64,21 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
           const slot = getSlot(index, activeIndex, total);
           const isActive = slot === '0';
 
-          // Only apply tilt transform to the active card when mouse moves
-          const tiltStyle =
-            isActive && (tilt.x !== 0 || tilt.y !== 0)
-              ? {
-                  transform: `translate(-50%, -50%) translateX(0px) translateY(-22px) scale(1.2) translateZ(110px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                }
-              : {};
+          const currentVariant = { ...slotVariants[slot] };
+          if (isActive && (tilt.x !== 0 || tilt.y !== 0)) {
+            currentVariant.rotateX = tilt.x;
+            currentVariant.rotateY = tilt.y;
+          }
 
           return (
-            <div
+            <motion.div
               key={card.id}
               className="card-slot"
-              data-slot={slot}
-              style={tiltStyle}
+              animate={currentVariant}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               onMouseMove={(e) => handleMouseMove(e, slot)}
               onMouseLeave={() => handleMouseLeave(slot)}
             >
-              {/*
-                Structure:
-                  card-gold-border  ← the gradient gold border (13px radius, 2.5px thick)
-                    card-frame      ← overflow:hidden clip (10.5px radius)
-                      card-sheen    ← warm specular light sweep (active only)
-                      img           ← photo fills 100%, no text, no overlays
-              */}
               <div className="card-gold-border">
                 <div className="card-frame">
                   <div className="card-sheen" />
@@ -90,8 +91,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      display: 'block',
-                      transition: 'transform 0.7s ease',
+                      display: 'block'
                     }}
                   />
                 </div>
@@ -100,7 +100,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
               <div className={`card-event-title ${isActive ? 'active' : ''}`}>
                 {card.eventTitle}
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
