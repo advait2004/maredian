@@ -12,12 +12,13 @@ function getSlot(index, activeIndex, total) {
 }
 
 const slotVariants = {
-  "0": { x: 0, y: -22, scale: 1.2, z: 110, rotateX: 0, rotateY: 0, opacity: 1, zIndex: 50 },
-  "1": { x: 280, y: 10, scale: 0.9, z: 40, rotateX: 0, rotateY: -20, opacity: 0.9, zIndex: 40 },
-  "2": { x: 500, y: 20, scale: 0.7, z: 0, rotateX: 0, rotateY: -35, opacity: 0.6, zIndex: 30 },
-  "3": { x: -500, y: 20, scale: 0.7, z: 0, rotateX: 0, rotateY: 35, opacity: 0.6, zIndex: 30 },
-  "4": { x: -280, y: 10, scale: 0.9, z: 40, rotateX: 0, rotateY: 20, opacity: 0.9, zIndex: 40 },
-  "out-right": { x: 800, y: 40, scale: 0.5, z: -50, rotateX: 0, rotateY: -45, opacity: 0, zIndex: 20 }
+  "0": { x: 0, y: -22, scale: 1.2, z: 110, rotateX: 0, rotateY: 0, opacity: 1, zIndex: 50, filter: "brightness(1) saturate(1) blur(0px)" },
+  "1": { x: 145, y: 13, scale: 0.87, z: -35, rotateX: 0, rotateY: -15, opacity: 0.9, zIndex: 30, filter: "brightness(0.82) saturate(0.9) blur(0px)" },
+  "2": { x: 270, y: 31, scale: 0.70, z: -115, rotateX: 0, rotateY: -25, opacity: 0.6, zIndex: 15, filter: "brightness(0.65) saturate(0.7) blur(0.8px)" },
+  "3": { x: -270, y: 31, scale: 0.70, z: -115, rotateX: 0, rotateY: 25, opacity: 0.6, zIndex: 15, filter: "brightness(0.65) saturate(0.7) blur(0.8px)" },
+  "4": { x: -145, y: 13, scale: 0.87, z: -35, rotateX: 0, rotateY: 15, opacity: 0.9, zIndex: 30, filter: "brightness(0.82) saturate(0.9) blur(0px)" },
+  "out-right": { x: 400, y: 55, scale: 0.5, z: -180, rotateX: 0, rotateY: -35, opacity: 0, zIndex: 5, filter: "brightness(0) saturate(0) blur(2px)" },
+  "out-left": { x: -400, y: 55, scale: 0.5, z: -180, rotateX: 0, rotateY: 35, opacity: 0, zIndex: 5, filter: "brightness(0) saturate(0) blur(2px)" }
 };
 
 export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
