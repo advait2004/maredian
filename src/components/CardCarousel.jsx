@@ -74,6 +74,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
             <motion.div
               key={card.id}
               className="card-slot"
+              data-slot={slot}
               animate={currentVariant}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               onMouseMove={(e) => handleMouseMove(e, slot)}
