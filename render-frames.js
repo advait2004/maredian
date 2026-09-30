@@ -100,14 +100,17 @@ const OUTPUT_PATH = 'poster_hq.mp4';
       // Process Video & CSS Animations
       document.querySelectorAll('video').forEach(v => {
         v.pause();
-        v.currentTime = window.__timeMs / 1000;
+        const dur = (v.duration && v.duration > 0) ? v.duration : 999999;
+        v.currentTime = (window.__timeMs / 1000) % dur;
       });
       if (document.getAnimations) {
+        const delta = window.__timeMs - (window.__lastTimeMs || 0);
         document.getAnimations().forEach(a => {
           a.pause();
-          a.currentTime = window.__timeMs;
+          a.currentTime = (a.currentTime || 0) + delta;
         });
       }
+      window.__lastTimeMs = window.__timeMs;
     };
   `);
 
