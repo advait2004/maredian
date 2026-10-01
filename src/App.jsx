@@ -105,8 +105,8 @@ export default function App() {
         <div className="poster-date-display">
           <span className="lit-text lit-1 month">OCT</span>
           <span className="lit-text lit-2">5</span>,
-          <span className="lit-text lit-3">6</span>,
-          <span className="lit-text lit-4">7</span>
+          <span className="lit-text lit-3"> 6</span> &amp;
+          <span className="lit-text lit-4"> 7</span>
         </div>
 
         {/* Subtle dark vignette so cards read clearly */}
