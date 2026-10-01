@@ -81,7 +81,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
               onMouseMove={(e) => handleMouseMove(e, slot)}
               onMouseLeave={() => handleMouseLeave(slot)}
             >
-              <div className="card-gold-border">
+              <div key={`border-${isActive ? 'active' : 'inactive'}`} className="card-gold-border">
                 <div className="card-frame">
                   <img
                     src={card.image}
@@ -95,7 +95,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
                       display: 'block'
                     }}
                   />
-                  <div className="card-sheen" />
+                  {isActive && <div key={`sheen-${activeIndex}`} className="card-sheen" />}
                 </div>
               </div>
               
