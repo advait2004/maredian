@@ -9,12 +9,30 @@ export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const total = INITIAL_CARDS.length;
 
-  // Continuous auto-cycle: right → left, every 3.2 seconds
+  // Deterministic Master Clock Engine
+  // Instead of a fragile setInterval, we mathematically lock the active card 
+  // to the absolute elapsed time since the app mounted.
   useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % total);
-    }, 3200);
-    return () => clearInterval(id);
+    let start = performance.now();
+    let frameId;
+
+    const tick = (now) => {
+      const elapsed = now - start;
+      
+      // Calculate which card should be active right now.
+      // E.g., at 0s->0, 3.2s->1, 6.4s->2, etc.
+      const targetIndex = Math.floor(elapsed / 3200) % total;
+      
+      setActiveIndex(prev => {
+        if (prev !== targetIndex) return targetIndex;
+        return prev;
+      });
+      
+      frameId = requestAnimationFrame(tick);
+    };
+    
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, [total]);
 
   return (

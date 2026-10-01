@@ -5,9 +5,12 @@ function getSlot(index, activeIndex, total) {
   const diff = ((index - activeIndex) % total + total) % total;
   if (diff === 0) return '0';
   if (diff === 1) return '1';
-  if (diff === 2) return '2';
-  if (diff === total - 2) return '3';
   if (diff === total - 1) return '4';
+  
+  if (total >= 5) {
+    if (diff === 2) return '2';
+    if (diff === total - 2) return '3';
+  }
   return 'out-right';
 }
 
@@ -81,7 +84,13 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
               onMouseMove={(e) => handleMouseMove(e, slot)}
               onMouseLeave={() => handleMouseLeave(slot)}
             >
-              <div key={`border-${isActive ? 'active' : 'inactive'}`} className="card-gold-border">
+              <motion.div 
+                key={`border-${isActive ? 'active' : 'inactive'}`} 
+                className="card-gold-border"
+                initial={isActive ? { backgroundPosition: "0% 0%, 150% 150%" } : { backgroundPosition: "0% 0%, 150% 150%" }}
+                animate={isActive ? { backgroundPosition: "0% 0%, -50% -50%" } : { backgroundPosition: "0% 0%, 150% 150%" }}
+                transition={isActive ? { duration: 4.5, ease: [0.25, 1, 0.35, 1], delay: 0.8 } : {}}
+              >
                 <div className="card-frame">
                   <img
                     src={card.image}
@@ -91,13 +100,22 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: (card.id === 'card-4' || card.id === 'card-6' || card.id === 'card-7') ? 'contain' : 'cover',
+                      backgroundColor: (card.id === 'card-4' || card.id === 'card-6' || card.id === 'card-7') ? '#ffffff' : 'transparent',
                       display: 'block'
                     }}
                   />
-                  {isActive && <div key={`sheen-${activeIndex}`} className="card-sheen" />}
+                  {isActive && (
+                    <motion.div 
+                      key={`sheen-${activeIndex}`} 
+                      className="card-sheen"
+                      initial={{ backgroundPosition: "-350% center" }}
+                      animate={{ backgroundPosition: "350% center" }}
+                      transition={{ duration: 4.5, ease: [0.25, 1, 0.35, 1], delay: 0.8 }}
+                    />
+                  )}
                 </div>
-              </div>
+              </motion.div>
               
               <div className={`card-event-title ${isActive ? 'active' : ''}`}>
                 {card.eventTitle}

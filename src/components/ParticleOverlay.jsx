@@ -68,14 +68,14 @@ export default function ParticleOverlay() {
         this.b = Math.floor(255 - (255 - 135) * goldRatio);
       }
       
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
+      update(delta = 1) {
+        this.x += this.speedX * delta;
+        this.y += this.speedY * delta;
         
         // Gentle organic wafting
-        this.angle += this.pulseSpeed;
-        this.x += Math.sin(this.angle) * 0.15;
-        this.y += Math.cos(this.angle) * 0.1;
+        this.angle += this.pulseSpeed * delta;
+        this.x += Math.sin(this.angle) * 0.15 * delta;
+        this.y += Math.cos(this.angle) * 0.1 * delta;
         
         // Pulse opacity smoothly
         this.opacity = this.baseOpacity + Math.sin(this.angle) * 0.2;
@@ -105,20 +105,25 @@ export default function ParticleOverlay() {
       particles.push(new Particle());
     }
     
-    // Animation Loop
-    let animationId;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Time tracking for deterministic physics
+      let lastTime = performance.now();
+      let animationId;
       
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
+      const animate = (time) => {
+        const delta = (time - lastTime) / 16.666; // Normalize to 60fps base speed
+        lastTime = time;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+          particle.update(delta);
+          particle.draw();
+        });
+        
+        animationId = requestAnimationFrame(animate);
+      };
       
       animationId = requestAnimationFrame(animate);
-    };
-    
-    animate();
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);

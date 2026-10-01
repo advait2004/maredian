@@ -19,7 +19,7 @@ export default function PetalOverlay() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    let time = 0;
+    let globalTimeForWind = 0;
     
     class Petal {
       constructor() {
@@ -55,11 +55,11 @@ export default function PetalOverlay() {
         }
       }
       
-      update(globalWind) {
-        this.y += this.speedY;
-        this.x += this.speedX + Math.sin(this.angle) * this.oscillationAmplitude + globalWind;
-        this.angle += this.oscillationSpeed;
-        this.rotation += this.rotationSpeed;
+      update(delta = 1, globalWind) {
+        this.y += this.speedY * delta;
+        this.x += (this.speedX + Math.sin(this.angle) * this.oscillationAmplitude + globalWind) * delta;
+        this.angle += this.oscillationSpeed * delta;
+        this.rotation += this.rotationSpeed * delta;
         
         if (this.y > canvas.height + 20) {
           this.reset();
@@ -86,22 +86,28 @@ export default function PetalOverlay() {
       particles.push(new Petal());
     }
     
+    // Deterministic master clock variables
+    let lastTime = performance.now();
     let animationId;
-    const animate = () => {
+    
+    const animate = (time) => {
+      const delta = (time - lastTime) / 16.666; // Normalize to 60fps base speed
+      lastTime = time;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      time += 0.01;
-      const globalWind = Math.sin(time) * 1.5; 
+      globalTimeForWind += 0.01 * delta;
+      const globalWind = Math.sin(globalTimeForWind) * 1.5; 
       
       particles.forEach(p => {
-        p.update(globalWind);
+        p.update(delta, globalWind);
         p.draw();
       });
       
       animationId = requestAnimationFrame(animate);
     };
     
-    animate();
+    animationId = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
