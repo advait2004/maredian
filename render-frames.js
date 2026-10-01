@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-const RECORDING_DURATION = 16000; // 16 seconds
+const RECORDING_DURATION = 22400; // 22.4 seconds (7 cards * 3.2s)
 const FPS = 60;
 const TOTAL_FRAMES = (RECORDING_DURATION / 1000) * FPS;
 const SERVER_URL = 'http://localhost:5173';
