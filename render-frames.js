@@ -141,12 +141,14 @@ const OUTPUT_PATH = 'poster_hq.mp4';
   const iframeHandle = await page.$('#poster-frame');
   const frame = await iframeHandle.contentFrame();
 
-  console.log('Allowing app to load and mount (mocking 4 seconds of time)...');
+  console.log('Allowing app to load and mount (mocking 1 full rotation cycle)...');
   let currentSimTime = 0;
-  for(let i=0; i<240; i++) {
+  // Pre-roll for exactly 22400ms (7 cards * 3200ms) to ensure it loops perfectly back to Card 0 (Hackathena)
+  const PREROLL_FRAMES = (22400 / 1000) * FPS; 
+  for(let i=0; i<PREROLL_FRAMES; i++) {
      currentSimTime += (1000 / FPS);
      await frame.evaluate((time) => window.__advanceTime(time), currentSimTime);
-     await new Promise(r => setTimeout(r, 10)); // Yield to network/React
+     await new Promise(r => setTimeout(r, 2)); // Yield to network/React rapidly
   }
 
   console.log('Waiting for assets and fonts...');
