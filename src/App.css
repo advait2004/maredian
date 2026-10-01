@@ -250,7 +250,7 @@
     0 12px 24px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(220, 20, 60, 0.3);
   /* very faint cherry red glow */
-  animation: premiumBorderGlare 4.5s cubic-bezier(0.25, 1, 0.35, 1) 1 forwards;
+  animation: premiumBorderGlare 4.5s cubic-bezier(0.25, 1, 0.35, 1) 0.8s 1 forwards;
 }
 
 @keyframes premiumBorderGlare {
@@ -294,7 +294,7 @@
 
 .card-slot[data-slot="0"] .card-sheen {
   opacity: 1;
-  animation: premiumSheen 4.5s cubic-bezier(0.25, 1, 0.35, 1) 1 forwards;
+  animation: premiumSheen 4.5s cubic-bezier(0.25, 1, 0.35, 1) 0.8s 1 forwards;
 }
 
 @keyframes premiumSheen {
