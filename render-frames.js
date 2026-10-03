@@ -2,8 +2,10 @@ import puppeteer from 'puppeteer';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { INITIAL_CARDS } from './src/data/cardsData.js';
 
-const RECORDING_DURATION = 22400; // 22.4 seconds (7 cards * 3.2s)
+const CARD_CYCLE_MS = 3200;
+const RECORDING_DURATION = INITIAL_CARDS.length * CARD_CYCLE_MS; // Dynamically scale based on cards array!
 const FPS = 60;
 const TOTAL_FRAMES = (RECORDING_DURATION / 1000) * FPS;
 const SERVER_URL = 'http://localhost:5173';
@@ -143,8 +145,8 @@ const OUTPUT_PATH = 'poster_hq.mp4';
 
   console.log('Allowing app to load and mount (mocking 1 full rotation cycle)...');
   let currentSimTime = 0;
-  // Pre-roll for exactly 22400ms (7 cards * 3200ms) to ensure it loops perfectly back to Card 0 (Hackathena)
-  const PREROLL_FRAMES = (22400 / 1000) * FPS; 
+  // Pre-roll for exactly 1 full cycle to ensure it loops perfectly back to Card 0 (Hackathena)
+  const PREROLL_FRAMES = (RECORDING_DURATION / 1000) * FPS; 
   for(let i=0; i<PREROLL_FRAMES; i++) {
      currentSimTime += (1000 / FPS);
      await frame.evaluate((time) => window.__advanceTime(time), currentSimTime);

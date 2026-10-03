@@ -54,24 +54,6 @@ export const INITIAL_CARDS = [
     eventTitle: 'WORKSHOP ON\nCTRL + ALT + SECURE'
   },
   {
-    id: 'card-4',
-    title: 'TECH TALK',
-    subtitle: 'Surviving in the AI Era',
-    category: 'Keynote',
-    rarity: 'EXPERT INSIGHT',
-    rarityColor: '#eab308',
-    date: 'OCT 5, 2026',
-    time: '11:00 AM',
-    venue: 'Insight Hall',
-    prizePool: 'Free Entry',
-    image: '/assets/surviving_ai.jpg',
-    description: 'Join Dr. Sreekanth Madhavan, Founder & CEO of Kabani Tech, for an exclusive talk on navigating the future of technology and securing your career in the era of artificial intelligence.',
-    tags: ['Tech Talk', 'AI Era', 'Career Security', 'Free Entry'],
-    speakerOrHost: 'Dr. Sreekanth Madhavan',
-    badge: 'LEADERSHIP TALK',
-    eventTitle: 'SURVIVING IN THE\nAI ERA'
-  },
-  {
     id: 'card-5',
     title: 'TECHNICAL WORKSHOP',
     subtitle: 'Hands-on Expert Deep Learning Sessions',
@@ -88,41 +70,5 @@ export const INITIAL_CARDS = [
     speakerOrHost: 'Senior AI Engineers & Architects',
     badge: 'EXPERT MASTERCLASS',
     eventTitle: 'FROM CLOUD FUNDAMENTALS\nTO DEPLOYMENT!'
-  },
-  {
-    id: 'card-6',
-    title: 'TECH TALK',
-    subtitle: 'AI Agent Building',
-    category: 'Keynote',
-    rarity: 'EXPERT INSIGHT',
-    rarityColor: '#eab308',
-    date: 'OCT 5, 2026',
-    time: '02:00 PM',
-    venue: 'Insight Hall',
-    prizePool: 'Free Entry',
-    image: '/assets/ai_agent.jpg',
-    description: 'Learn the fundamentals of building autonomous AI agents from scratch with Adithyan VS, CEO of ERA.',
-    tags: ['Tech Talk', 'AI Agents', 'Development', 'Free Entry'],
-    speakerOrHost: 'Adithyan VS',
-    badge: 'LEADERSHIP TALK',
-    eventTitle: 'AI AGENT\nBuilding'
-  },
-  {
-    id: 'card-7',
-    title: 'TECH TALK',
-    subtitle: 'DevOps',
-    category: 'Keynote',
-    rarity: 'EXPERT INSIGHT',
-    rarityColor: '#eab308',
-    date: 'OCT 6, 2026',
-    time: '11:00 AM',
-    venue: 'IIIC',
-    prizePool: 'Free Entry',
-    image: '/assets/devops.jpg',
-    description: 'Dive deep into modern DevOps pipelines, automation, and scalable cloud infrastructure with Sreejith M Sreenivas, Senior DevOps Engineer at Synnefo Solutions.',
-    tags: ['DevOps', 'Cloud', 'Automation', 'Free Entry'],
-    speakerOrHost: 'Sreejith M Sreenivas',
-    badge: 'LEADERSHIP TALK',
-    eventTitle: 'DevOps'
   }
 ];
