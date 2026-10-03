@@ -54,6 +54,24 @@ export const INITIAL_CARDS = [
     eventTitle: 'WORKSHOP ON\nCTRL + ALT + SECURE'
   },
   {
+    id: 'card-4',
+    title: 'TECH TALKS',
+    subtitle: 'Mega Panel: AI, DevOps & Digital Literacy',
+    category: 'Keynote',
+    rarity: 'EXPERT INSIGHT',
+    rarityColor: '#eab308',
+    date: 'OCT 5 & 6, 2026',
+    time: '11:00 AM Onwards',
+    venue: 'Insight Hall & IIIC',
+    prizePool: 'Free Entry',
+    image: '/assets/tech_talks_mega.png',
+    description: 'Join a mega panel of industry leaders including Dr. Sreekanth Madhavan, Adithyan V S, Pradeep Nair, Sreejith M Sreenivas, and Manjusha T R for an exclusive series of Tech Talks.',
+    tags: ['Tech Talk', 'AI Era', 'DevOps', 'Digital Literacy'],
+    speakerOrHost: 'Global AI Founders & Tech Visionaries',
+    badge: 'LEADERSHIP TALK',
+    eventTitle: 'TECH TALKS\nMEGA PANEL'
+  },
+  {
     id: 'card-5',
     title: 'TECHNICAL WORKSHOP',
     subtitle: 'Hands-on Expert Deep Learning Sessions',

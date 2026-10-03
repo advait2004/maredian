@@ -100,8 +100,7 @@ export default function CardCarousel({ cards, activeIndex, setActiveIndex }) {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: (card.id === 'card-4' || card.id === 'card-6' || card.id === 'card-7') ? 'contain' : 'cover',
-                      backgroundColor: (card.id === 'card-4' || card.id === 'card-6' || card.id === 'card-7') ? '#ffffff' : 'transparent',
+                      objectFit: 'cover',
                       display: 'block'
                     }}
                   />
