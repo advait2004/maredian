@@ -88,5 +88,23 @@ export const INITIAL_CARDS = [
     speakerOrHost: 'Senior AI Engineers & Architects',
     badge: 'EXPERT MASTERCLASS',
     eventTitle: 'FROM CLOUD FUNDAMENTALS\nTO DEPLOYMENT!'
+  },
+  {
+    id: 'card-6',
+    title: 'SkillX WORKSHOP',
+    subtitle: 'Practical AI Tools Workshop',
+    category: 'Workshop',
+    rarity: 'HANDS-ON',
+    rarityColor: '#8b5cf6',
+    date: 'OCT 6, 2026',
+    time: 'Full Day Session',
+    venue: 'Jyothi Engineering College, Thrissur',
+    prizePool: '₹100 Reg Fee (Activity Points Rewarded)',
+    image: '/assets/intro_to_ai.png',
+    description: 'An intensive introduction to Artificial Intelligence and practical AI tools. Guided by Joanne Alice Thomas, Co-founder of LunaLabs, AI developer, and public speaker.',
+    tags: ['Artificial Intelligence', 'AI Tools', 'SkillX', 'Hands-on'],
+    speakerOrHost: 'Joanne Alice Thomas',
+    badge: 'EXPERT MASTERCLASS',
+    eventTitle: 'INTRODUCTION TO\nARTIFICIAL INTELLIGENCE'
   }
 ];
